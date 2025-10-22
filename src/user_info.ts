@@ -104,19 +104,15 @@ export class UserInfo {
       }
     });
     const durationTime = new Date().getTime() -
-      new Date(userActivity.createdAt).getTime();
+      new Date('2020-01-17').getTime(); // Hardcoded due to the deletion of my old account
     const durationYear = new Date(durationTime).getUTCFullYear() - 1970;
     const durationDays = Math.floor(
       durationTime / (1000 * 60 * 60 * 24) / 100,
     );
-    const ancientAccount =
-      new Date(userActivity.createdAt).getFullYear() <= 2010 ? 1 : 0;
-    const joined2020 = new Date(userActivity.createdAt).getFullYear() == 2020
-      ? 1
-      : 0;
-    const ogAccount = new Date(userActivity.createdAt).getFullYear() <= 2008
-      ? 1
-      : 0;
+    const hardcodedDate = new Date('2020-01-17'); // Hardcoded due to the deletion of my old account
+    const ancientAccount = hardcodedDate.getFullYear() <= 2010 ? 1 : 0;
+    const joined2020 = hardcodedDate.getFullYear() == 2020 ? 1 : 0;
+    const ogAccount = hardcodedDate.getFullYear() <= 2008 ? 1 : 0;
 
     this.totalCommits = totalCommits;
     this.totalFollowers = userActivity.followers.totalCount;
