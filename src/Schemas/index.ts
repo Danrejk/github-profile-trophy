@@ -57,33 +57,22 @@ export const queryUserRepository = `
         }
       }
 
-      contributionsCollection(
-        includeUserRepositories: true
-      ) {
+      contributionsCollection {
         totalCommitContributions
-
-        repositoriesContributedTo(
-          first: 100,
-          privacy: ANY,
-          isFork: false,
-          orderBy: { direction: DESC, field: STARGAZERS }
-        ) {
-          totalCount
-          nodes {
-            name
+        restrictedContributionsCount
+        
+        commitContributionsByRepository(maxRepositories: 100) {
+          repository {
+            nameWithOwner
             isArchived
-            defaultBranchRef {
-              target {
-                ... on Commit {
-                  history(first: 0) {
-                    totalCount
-                  }
-                }
-              }
-            }
+            isFork
+          }
+          contributions {
+            totalCount
           }
         }
       }
     }
   }
 `;
+
