@@ -3,6 +3,13 @@ type Stargazers = { totalCount: number };
 type Repository = {
   languages: { nodes: Language[] };
   stargazers: Stargazers;
+  defaultBranchRef?: {
+    target: {
+      history: {
+        totalCount: number;
+      };
+    };
+  } | null;
 };
 export type GitHubUserRepository = {
   repositories: {
@@ -69,6 +76,14 @@ export class UserInfo {
     userPullRequest: GitHubUserPullRequest,
     userRepository: GitHubUserRepository,
   ) {
+
+  const totalStargazers = userRepository.repositories.nodes.reduce(
+    (prev: number, node: Repository) => {
+      return prev + node.stargazers.totalCount;
+    },
+    0,
+  );
+    
   const totalCommits = 
     userActivity.contributionsCollection.restrictedContributionsCount +
     userActivity.contributionsCollection.totalCommitContributions +
