@@ -43,16 +43,44 @@ export const queryUserPullRequest = `
 export const queryUserRepository = `
   query userInfo($username: String!) {
     user(login: $username) {
-      repositories(first: 100, ownerAffiliations: OWNER, orderBy: {direction: DESC, field: STARGAZERS}) {
+      repositories(
+        first: 100,
+        ownerAffiliations: OWNER,
+        orderBy: { direction: DESC, field: STARGAZERS }
+      ) {
         totalCount
         nodes {
-          languages(first: 3, orderBy: {direction:DESC, field: SIZE}) {
-            nodes {
-              name
-            }
+          languages(first: 3, orderBy: { direction: DESC, field: SIZE }) {
+            nodes { name }
           }
-          stargazers {
-            totalCount
+          stargazers { totalCount }
+        }
+      }
+
+      contributionsCollection(
+        includeUserRepositories: true
+      ) {
+        totalCommitContributions
+
+        repositoriesContributedTo(
+          first: 100,
+          privacy: ANY,
+          isFork: false,
+          orderBy: { direction: DESC, field: STARGAZERS }
+        ) {
+          totalCount
+          nodes {
+            name
+            isArchived
+            defaultBranchRef {
+              target {
+                ... on Commit {
+                  history(first: 0) {
+                    totalCount
+                  }
+                }
+              }
+            }
           }
         }
       }
