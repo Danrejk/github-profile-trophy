@@ -32,6 +32,14 @@ export type GitHubUserActivity = {
     totalCommitContributions: number;
     restrictedContributionsCount: number;
     totalPullRequestReviewContributions: number;
+    repositoriesContributedTo: {
+      nodes: Array<{
+        isArchived: boolean;
+        defaultBranchRef: {
+          target: { history: { totalCount: number } };
+        } | null;
+      }>;
+    };
   };
   organizations: {
     totalCount: number;
