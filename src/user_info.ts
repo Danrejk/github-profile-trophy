@@ -69,15 +69,14 @@ export class UserInfo {
     userPullRequest: GitHubUserPullRequest,
     userRepository: GitHubUserRepository,
   ) {
-    const totalCommits =
-      userActivity.contributionsCollection.restrictedContributionsCount +
-      userActivity.contributionsCollection.totalCommitContributions;
-    const totalStargazers = userRepository.repositories.nodes.reduce(
-      (prev: number, node: Repository) => {
-        return prev + node.stargazers.totalCount;
-      },
-      0,
-    );
+  const totalCommits = 
+    userActivity.contributionsCollection.restrictedContributionsCount +
+    userActivity.contributionsCollection.totalCommitContributions +
+    userRepository.repositories.nodes.reduce((sum, repo) => {
+      const commits = repo.defaultBranchRef?.target?.history?.totalCount || 0;
+      return sum + commits;
+    }, 0);
+
 
     const languages = new Set<string>();
     userRepository.repositories.nodes.forEach((node: Repository) => {
