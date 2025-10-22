@@ -43,6 +43,8 @@ export const queryUserPullRequest = `
 export const queryUserRepository = `
   query userInfo($username: String!) {
     user(login: $username) {
+      createdAt
+      
       repositories(
         first: 100,
         ownerAffiliations: OWNER,
@@ -54,25 +56,17 @@ export const queryUserRepository = `
             nodes { name }
           }
           stargazers { totalCount }
-        }
-      }
-
-      contributionsCollection {
-        totalCommitContributions
-        restrictedContributionsCount
-        
-        commitContributionsByRepository(maxRepositories: 100) {
-          repository {
-            nameWithOwner
-            isArchived
-            isFork
-          }
-          contributions {
-            totalCount
+          defaultBranchRef {
+            target {
+              ... on Commit {
+                history {
+                  totalCount
+                }
+              }
+            }
           }
         }
       }
     }
   }
 `;
-
